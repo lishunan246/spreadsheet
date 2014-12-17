@@ -72,9 +72,6 @@ public class MainWindow extends JFrame implements ActionListener{
 
                     String[][] data=new String[list.size()][list.get(0).size()];
 
-                    DefaultTableModel tableModel = new DefaultTableModel();
-
-
                     for(int i=0;i<list.size();i++)
                     {
                         for(int j=0;j<list.get(i).size();j++)
@@ -83,27 +80,15 @@ public class MainWindow extends JFrame implements ActionListener{
                                 data[i][j]="";
                             else
                                 data[i][j]=list.get(i).get(j);
-
-                            System.out.print(data[i][j]);
                         }
                     }
                     String[] head = {"q", "e", "r", "t"};
                     this.remove(table);
-                    table=new JTable(data,head);
+                    DefaultTableModel tableModel = new DefaultTableModel(data, head);
+                    table = new JTable(tableModel);
 
-                    //table.setVisible(true);
-                    //table.repaint();
-                    //table.revalidate();
                     this.add(new JScrollPane(table));
                     this.revalidate();
-//
-//                    for(CSVRecord record:list)
-//                    {
-//                        System.out.println(record);
-//                        System.out.println(record.getRecordNumber());
-//                        System.out.println(record.size());
-//
-//                    }
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                     JOptionPane.showMessageDialog(this,"Can't open file");
@@ -123,12 +108,14 @@ public class MainWindow extends JFrame implements ActionListener{
                     writer = new FileWriter(file);
                     CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
 
+
                     for (int i = 0; i < tableModel.getRowCount(); i++) {
                         String[] strings = new String[tableModel.getColumnCount()];
                         for (int j = 0; j < tableModel.getColumnCount(); j++) {
                             strings[j] = (String) tableModel.getValueAt(i, j);
+
                         }
-                        csvPrinter.printRecord("ddd");
+                        csvPrinter.printRecord(strings);
                     }
                     writer.flush();
                     writer.close();

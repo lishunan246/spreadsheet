@@ -17,6 +17,7 @@ import java.io.*;
  */
 public class MainWindow extends JFrame implements ActionListener{
     protected JTable table;
+    protected JScrollPane jScrollPane = new JScrollPane();
 
     MainWindow()
     {
@@ -44,6 +45,7 @@ public class MainWindow extends JFrame implements ActionListener{
         jMenu.add(jMenuItem);
 
         jMenuBar.setVisible(true);
+        this.add(jScrollPane);
         this.setJMenuBar(jMenuBar);
         this.setVisible(true);
     }
@@ -64,6 +66,7 @@ public class MainWindow extends JFrame implements ActionListener{
                     reader = new FileReader(file);
                     CSVParser csvParser=new CSVParser(reader,format);
                     java.util.List<CSVRecord> list=csvParser.getRecords();
+                    csvParser.close();
 
                     String[][] data=new String[list.size()][list.get(0).size()];
 
@@ -84,8 +87,9 @@ public class MainWindow extends JFrame implements ActionListener{
                     
                     DefaultTableModel tableModel = new DefaultTableModel(data, head);
                     table = new JTable(tableModel);
-
-                    this.add(new JScrollPane(table));
+                    this.remove(jScrollPane);
+                    jScrollPane = new JScrollPane(table);
+                    this.add(jScrollPane);
                     this.revalidate();
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();

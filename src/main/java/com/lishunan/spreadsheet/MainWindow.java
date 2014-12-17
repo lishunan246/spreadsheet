@@ -5,7 +5,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import javax.swing.*;
-import java.awt.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -58,7 +58,7 @@ public class MainWindow extends JFrame implements ActionListener{
             {
                 File file=jFileChooser.getSelectedFile();
 
-                FileReader reader= null;
+                FileReader reader;
                 CSVFormat format=CSVFormat.DEFAULT;
                 try {
                     reader = new FileReader(file);
@@ -66,6 +66,9 @@ public class MainWindow extends JFrame implements ActionListener{
                     java.util.List<CSVRecord> list=csvParser.getRecords();
 
                     String[][] data=new String[list.size()][list.get(0).size()];
+
+                    DefaultTableModel tableModel = new DefaultTableModel();
+
 
                     for(int i=0;i<list.size();i++)
                     {
@@ -75,19 +78,26 @@ public class MainWindow extends JFrame implements ActionListener{
                                 data[i][j]="";
                             else
                                 data[i][j]=list.get(i).get(j);
+
+                            System.out.print(data[i][j]);
                         }
                     }
-                    String[] head={"","","",""};
+                    String[] head = {"q", "e", "r", "t"};
+                    this.remove(table);
                     table=new JTable(data,head);
-                    repaint();
-
-                    for(CSVRecord record:list)
-                    {
-                        System.out.println(record);
-                        System.out.println(record.getRecordNumber());
-                        System.out.println(record.size());
-
-                    }
+                    //table.setVisible(true);
+                    //table.repaint();
+                    //table.revalidate();
+                    this.add(table);
+                    this.revalidate();
+//
+//                    for(CSVRecord record:list)
+//                    {
+//                        System.out.println(record);
+//                        System.out.println(record.getRecordNumber());
+//                        System.out.println(record.size());
+//
+//                    }
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                     JOptionPane.showMessageDialog(this,"Can't open file");

@@ -2,16 +2,15 @@ package com.lishunan.spreadsheet;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by lishunan on 14-12-16.
@@ -39,6 +38,12 @@ public class MainWindow extends JFrame implements ActionListener{
         jMenuItem.addActionListener(this);
         jMenu.add(jMenuItem);
 
+        jMenuItem = new JMenuItem("Save");
+        jMenuItem.setActionCommand("save");
+        jMenuItem.addActionListener(this);
+        jMenu.add(jMenuItem);
+
+        //add the table
         table=new JTable(2,2);
         table.setVisible(true);
         this.add(table);
@@ -105,6 +110,31 @@ public class MainWindow extends JFrame implements ActionListener{
                 } catch (IOException e1) {
                     e1.printStackTrace();
                     JOptionPane.showMessageDialog(this,"Can't parse file");
+                }
+            }
+        } else if ("save".equals(e.getActionCommand())) {
+            JFileChooser jFileChooser = new JFileChooser();
+            if (jFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                File file = jFileChooser.getSelectedFile();
+                FileWriter writer;
+                try {
+                    TableModel tableModel = table.getModel();
+
+                    writer = new FileWriter(file);
+                    CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
+
+                    for (int i = 0; i < tableModel.getRowCount(); i++) {
+                        String[] strings = new String[tableModel.getColumnCount()];
+                        for (int j = 0; j < tableModel.getColumnCount(); j++) {
+                            strings[j] = (String) tableModel.getValueAt(i, j);
+                        }
+                        csvPrinter.printRecord("ddd");
+                    }
+                    writer.flush();
+                    writer.close();
+                    csvPrinter.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
                 }
             }
         }

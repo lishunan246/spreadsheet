@@ -43,11 +43,6 @@ public class MainWindow extends JFrame implements ActionListener{
         jMenuItem.addActionListener(this);
         jMenu.add(jMenuItem);
 
-        //add the table
-        table=new JTable(2,2);
-        table.setVisible(true);
-        this.add(table);
-
         jMenuBar.setVisible(true);
         this.setJMenuBar(jMenuBar);
         this.setVisible(true);
@@ -86,8 +81,7 @@ public class MainWindow extends JFrame implements ActionListener{
                     for (int i = 0; i < list.get(0).size(); i++) {
                         head[i] = String.valueOf(i);
                     }
-
-                    this.remove(table);
+                    
                     DefaultTableModel tableModel = new DefaultTableModel(data, head);
                     table = new JTable(tableModel);
 

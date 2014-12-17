@@ -85,10 +85,11 @@ public class MainWindow extends JFrame implements ActionListener{
                     String[] head = {"q", "e", "r", "t"};
                     this.remove(table);
                     table=new JTable(data,head);
+
                     //table.setVisible(true);
                     //table.repaint();
                     //table.revalidate();
-                    this.add(table);
+                    this.add(new JScrollPane(table));
                     this.revalidate();
 //
 //                    for(CSVRecord record:list)

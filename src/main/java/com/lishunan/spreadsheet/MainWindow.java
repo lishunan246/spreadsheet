@@ -82,7 +82,11 @@ public class MainWindow extends JFrame implements ActionListener{
                                 data[i][j]=list.get(i).get(j);
                         }
                     }
-                    String[] head = {"q", "e", "r", "t"};
+                    String[] head = new String[list.get(0).size()];
+                    for (int i = 0; i < list.get(0).size(); i++) {
+                        head[i] = String.valueOf(i);
+                    }
+
                     this.remove(table);
                     DefaultTableModel tableModel = new DefaultTableModel(data, head);
                     table = new JTable(tableModel);
